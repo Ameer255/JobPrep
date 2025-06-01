@@ -99,17 +99,29 @@
   </div>
 
   <script>
-    function login() {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+   function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-      // Dummy logic – Replace with your actual API
-      if (email === "test@example.com" && password === "1234") {
-        location.href = "home.html"; // redirect to home page
-      } else {
-        document.getElementById("status").innerText = "Invalid credentials!";
-      }
+  fetch("https://script.google.com/macros/s/AKfycbwIc3_fGhRfbw67J1JPd5HV0xF5DrckHotAsKf6DhLAufp4VBkBD3m7lum65GLd4eGTAg/exec", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+    headers: {
+      "Content-Type": "application/json"
     }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      window.location.href = "home.html";
+    } else {
+      document.getElementById("status").innerText = data.error || "Login failed.";
+    }
+  })
+  .catch(err => {
+    document.getElementById("status").innerText = "Network error: " + err;
+  });
+}
 
     function loadRegister() {
       location.href = "register.html";
